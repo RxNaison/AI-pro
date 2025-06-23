@@ -54,6 +54,8 @@ android {
 
 dependencies {
 
+    implementation(libs.multiplatform.markdown.renderer.m3)
+
     implementation(libs.play.services.wearable)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Refresh
@@ -34,6 +35,8 @@ import com.rx.aipro.presentation.components.Author
 import com.rx.aipro.presentation.components.ChatMessage
 import com.rx.aipro.presentation.viewmodels.ChatViewModel
 import androidx.wear.compose.foundation.lazy.AutoCenteringParams
+import com.mikepenz.markdown.m3.Markdown
+import com.mikepenz.markdown.m3.markdownColor
 
 @Composable
 fun ChatScreen(chatViewModel: ChatViewModel) {
@@ -163,16 +166,29 @@ fun WearChatMessageItem(message: ChatMessage) {
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(0.85f)
+                .fillMaxWidth(0.9f)
                 .clip(RoundedCornerShape(12.dp))
                 .background(backgroundColor)
                 .padding(horizontal = 10.dp, vertical = 6.dp)
         ) {
-            Text(
-                text = message.text,
-                color = textColor,
-                style = MaterialTheme.typography.body2
-            )
+            if (message.author == Author.MODEL && message.text.isNotEmpty()) {
+                SelectionContainer {
+                    Markdown(
+                        content = message.text,
+                        colors = markdownColor(
+                            text = textColor,
+                            linkText = MaterialTheme.colors.secondary,
+                            codeBackground = textColor.copy(alpha = 0.1f)
+                        )
+                    )
+                }
+            } else {
+                Text(
+                    text = message.text,
+                    color = if (message.author == Author.ERROR) MaterialTheme.colors.onError else MaterialTheme.colors.onSurface,
+                    style = MaterialTheme.typography.body2.copy(fontSize = 13.sp)
+                )
+            }
         }
     }
 }
