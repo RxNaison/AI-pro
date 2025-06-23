@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,17 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource // If you add custom drawable icons
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.wear.compose.foundation.ExperimentalWearFoundationApi
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
@@ -38,12 +33,10 @@ import androidx.wear.compose.material.*
 import com.rx.aipro.presentation.components.Author
 import com.rx.aipro.presentation.components.ChatMessage
 import com.rx.aipro.presentation.viewmodels.ChatViewModel
-import kotlinx.coroutines.launch
 import androidx.wear.compose.foundation.lazy.AutoCenteringParams
-import com.rx.aipro.R
 
 @Composable
-fun ChatScreen(chatViewModel: ChatViewModel = viewModel()) {
+fun ChatScreen(chatViewModel: ChatViewModel) {
     val uiState by chatViewModel.uiState.collectAsState()
     val listState = rememberScalingLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -100,7 +93,7 @@ fun ChatScreen(chatViewModel: ChatViewModel = viewModel()) {
                             .padding(vertical = 8.dp),
                         onClick = { chatViewModel.startNewChatSession() },
                         label = { Text("New Chat", textAlign = TextAlign.Center) },
-                        icon = { Icon(Icons.Filled.Refresh, contentDescription = "New Chat") },
+                        icon = { Icon(Icons.Filled.Refresh, contentDescription = "Clear Chat") },
                         colors = ChipDefaults.secondaryChipColors()
                     )
                 }
@@ -234,16 +227,6 @@ fun WearMessageInput(
             cursorBrush = SolidColor(MaterialTheme.colors.primary),
             enabled = !isLoading
         )
-        // Alternative: Use a Chip that opens a full-screen text input
-        /*
-        Chip(
-            onClick = { // Open text input screen / dialog },
-            label = { Text(if (userInput.isEmpty()) "Type..." else userInput, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-            modifier = Modifier.weight(1f).padding(horizontal=4.dp),
-            colors = ChipDefaults.secondaryChipColors()
-        )
-        */
-
 
         if (isLoading) {
             CircularProgressIndicator(

@@ -1,28 +1,22 @@
 package com.rx.aipro.presentation
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.TimeText
-import androidx.wear.tooling.preview.devices.WearDevices
-import com.rx.aipro.R
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.wear.compose.navigation.SwipeDismissableNavHost
+import androidx.wear.compose.navigation.composable
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.rx.aipro.presentation.screens.ChatScreen
 import com.rx.aipro.presentation.screens.MainScreen
-import com.rx.aipro.presentation.theme.AIProTheme
+import com.rx.aipro.presentation.screens.Screen
+import com.rx.aipro.presentation.viewmodels.ChatViewModel
+import com.rx.aipro.presentation.viewmodels.ChatViewModelFactory
+import com.rx.aipro.presentation.viewmodels.availableGeminiModels
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,25 +27,35 @@ class MainActivity : ComponentActivity() {
         setTheme(android.R.style.Theme_DeviceDefault)
 
         setContent {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colors.background
-            ) {
-                ChatScreen()
-            }
+            WearAppNavigation()
         }
     }
 }
 
-//TimeText()
-
-@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
-fun DefaultPreview() {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background
+fun WearAppNavigation() {
+    val navController = rememberSwipeDismissableNavController()
+    val application = LocalContext.current.applicationContext as Application
+
+    SwipeDismissableNavHost(
+        navController = navController,
+        startDestination = Screen.Main.route
     ) {
-        ChatScreen()
+        composable(Screen.Main.route) {
+            val mainViewModel: com.rx.aipro.presentation.viewmodels.MainViewModel = viewModel(
+                factory = com.rx.aipro.presentation.screens.MainViewModelFactory(application)
+            )
+            MainScreen(navController = navController, mainViewModel = mainViewModel)
+        }
+        composable(Screen.Chat.route) { backStackEntry ->
+            val rawChatId = backStackEntry.arguments?.getString("chatId")
+            val modelName = backStackEntry.arguments?.getString("modelName") ?: availableGeminiModels.first()
+
+            val chatViewModel: ChatViewModel = viewModel(
+                key = "$rawChatId-$modelName",
+                factory = ChatViewModelFactory(application, rawChatId, modelName)
+            )
+            ChatScreen(chatViewModel = chatViewModel)
+        }
     }
 }
