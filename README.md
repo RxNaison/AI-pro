@@ -10,7 +10,7 @@ Change the run configuration to `app`.
 
 ![image](https://user-images.githubusercontent.com/873212/210559920-ef4a40c5-c8e0-478b-bb00-4879a8cf184a.png)
 
-Enter your API key in local.properties as GEMINI_API_KEY
+Enter your API key in local.properties as `GEMINI_API_KEY`
 
 ![image](https://github.com/user-attachments/assets/cc44cafb-fa92-4a61-ade8-cf147ae13b43)
 
