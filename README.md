@@ -2,6 +2,14 @@
 
 Gemini assistant for watches
 
+## Screenshots
+<img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/d6e10da4-6dd0-4b58-8708-827e6613336a" />
+<img width="250" height="244" alt="image" src="https://github.com/user-attachments/assets/453d0fd5-ee59-44f4-9db6-0d34168f833f" />
+<img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/52716be0-41a5-499c-87ff-e9d2fb99e68f" />
+
+
+
+
 # Development Environment
 
 **AI pro** uses the Gradle build system and can be imported directly into Android Studio (make sure you are using the latest stable version available [here](https://developer.android.com/studio)). 
