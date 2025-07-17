@@ -40,7 +40,7 @@ material3-android = { group = "androidx.compose.material3", name = "material3-an
 lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 compose-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "composeNavigation"}
 
-multiplatform-markdown-renderer-m3 = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-m3", version.ref = "multiplatformMarkdown" }
+multiplatform-markdown-renderer-m3 = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-m2", version.ref = "multiplatformMarkdown" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

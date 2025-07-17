@@ -35,8 +35,8 @@ import com.rx.aipro.presentation.components.Author
 import com.rx.aipro.presentation.components.ChatMessage
 import com.rx.aipro.presentation.viewmodels.ChatViewModel
 import androidx.wear.compose.foundation.lazy.AutoCenteringParams
-import com.mikepenz.markdown.m3.Markdown
-import com.mikepenz.markdown.m3.markdownColor
+import com.mikepenz.markdown.m2.Markdown
+import com.mikepenz.markdown.m2.markdownColor
 
 @Composable
 fun ChatScreen(chatViewModel: ChatViewModel) {
@@ -166,10 +166,10 @@ fun WearChatMessageItem(message: ChatMessage) {
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
                 .background(backgroundColor)
-                .padding(horizontal = 10.dp, vertical = 6.dp)
+                .padding(horizontal = 5.dp, vertical = 6.dp)
         ) {
             if (message.author == Author.MODEL && message.text.isNotEmpty()) {
                 SelectionContainer {
@@ -177,7 +177,6 @@ fun WearChatMessageItem(message: ChatMessage) {
                         content = message.text,
                         colors = markdownColor(
                             text = textColor,
-                            linkText = MaterialTheme.colors.secondary,
                             codeBackground = textColor.copy(alpha = 0.1f)
                         )
                     )
