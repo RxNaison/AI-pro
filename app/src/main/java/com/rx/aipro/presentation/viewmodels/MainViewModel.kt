@@ -19,7 +19,6 @@ val availableGeminiModels = listOf(
     "gemini-2.5-flash",
     "gemini-2.0-flash",
     "gemini-2.5-pro",
-    "gemini-2.0-flash-preview-image-generation",
     "gemini-2.0-flash-lite"
 )
 
