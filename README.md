@@ -7,8 +7,8 @@ Gemini assistant for watches
 <img width="250" height="244" alt="image" src="https://github.com/user-attachments/assets/453d0fd5-ee59-44f4-9db6-0d34168f833f" />
 <img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/52716be0-41a5-499c-87ff-e9d2fb99e68f" />
 
-
-
+## How to use
+<img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/60fef87b-6e3c-4d4d-b891-a3ade26b6923" />
 
 # Development Environment
 
