@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import com.rx.aipro.presentation.screens.NEW_CHAT_ID_PLACEHOLDER
+import kotlinx.coroutines.flow.first
 
 data class ChatUiState(
     val messages: List<ChatMessage> = emptyList(),
@@ -40,6 +41,8 @@ class ChatViewModel(
     private val chatSessionDao = AppDatabase.getDatabase(application).chatSessionDao()
     private val chatMessageDao = AppDatabase.getDatabase(application).chatMessageDao()
 
+    private val userSettingsDataStore = UserSettingsDataStore(application)
+
     private lateinit var generativeModel: GenerativeModel
     private var chat: Chat? = null
     private var isNewSession = passedChatId == null
@@ -55,15 +58,21 @@ class ChatViewModel(
 
     private fun initializeModelAndLoadHistory() {
         viewModelScope.launch {
-            if (BuildConfig.GEMINI_API_KEY.isEmpty() || BuildConfig.GEMINI_API_KEY == "YOUR_API_KEY_HERE") {
-                _uiState.update { it.copy(errorMessage = "API Key not set.") }
-                return@launch
+            var apiKey = userSettingsDataStore.getApiKey.first()
+
+            if (apiKey.isBlank()) {
+                if (BuildConfig.GEMINI_API_KEY.isEmpty() || BuildConfig.GEMINI_API_KEY == "YOUR_API_KEY_HERE") {
+                    _uiState.update { it.copy(errorMessage = "API Key not set. Please set it on the main screen.") }
+                    return@launch
+                } else {
+                    apiKey = BuildConfig.GEMINI_API_KEY
+                }
             }
 
             try {
                 generativeModel = GenerativeModel(
                     modelName = this@ChatViewModel.modelName,
-                    apiKey = BuildConfig.GEMINI_API_KEY
+                    apiKey = apiKey
                 )
 
                 val dbMessages = chatMessageDao.getMessagesForSession(currentSessionId)

@@ -54,7 +54,7 @@ android {
 
 dependencies {
 
-    implementation(libs.multiplatform.markdown.renderer.m3)
+    implementation(libs.multiplatform.markdown.renderer.m2)
 
     implementation(libs.play.services.wearable)
     implementation(platform(libs.compose.bom))
@@ -69,6 +69,7 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.datastore.preferences)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.generativeai)
     implementation(libs.material3.android)

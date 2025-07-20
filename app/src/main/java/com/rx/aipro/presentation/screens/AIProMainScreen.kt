@@ -9,13 +9,19 @@ import android.app.Application
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -41,6 +47,9 @@ fun MainScreen(
     val uiState by mainViewModel.uiState.collectAsState()
     val listState = rememberScalingLazyListState()
     val coroutineScope = rememberCoroutineScope()
+
+    var apiKeyInput by remember(uiState.apiKey) { mutableStateOf(uiState.apiKey) }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     val pickerState = rememberPickerState(initialNumberOfOptions = uiState.models.size.coerceAtLeast(0))
     LaunchedEffect(uiState.models) {
@@ -134,6 +143,41 @@ fun MainScreen(
                 }
             } else {
                 item { Text("No saved chats.", style = MaterialTheme.typography.body2, modifier = Modifier.padding(top = 20.dp)) }
+            }
+
+            item {
+                Text(
+                    "Gemini API Key",
+                    style = MaterialTheme.typography.title3,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+            item {
+                OutlinedTextField(
+                    value = apiKeyInput,
+                    onValueChange = { apiKeyInput = it },
+                    label = { Text("Enter API Key") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    trailingIcon = {
+                        val image = if (passwordVisible) painterResource(R.drawable.baseline_visibility_24) else painterResource(R.drawable.baseline_visibility_off_24)
+                        val description = if (passwordVisible) "Hide API Key" else "Show API Key"
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(image, description)
+                        }
+                    }
+                )
+            }
+            item {
+                Chip(
+                    onClick = { mainViewModel.saveApiKey(apiKeyInput) },
+                    label = { Text("Save Key") },
+                    icon = { Icon(painterResource(R.drawable.baseline_save_24), contentDescription = "Save Key") },
+                    colors = ChipDefaults.primaryChipColors(),
+                    modifier = Modifier.fillMaxWidth(0.9f).padding(vertical = 16.dp)
+                )
             }
         }
 
