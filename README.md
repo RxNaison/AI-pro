@@ -10,6 +10,8 @@ Gemini assistant for watches
 ## How to use
 <img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/60fef87b-6e3c-4d4d-b891-a3ade26b6923" />
 
+You can get your API key [here](https://aistudio.google.com/apikey)
+
 # Development Environment
 
 **AI pro** uses the Gradle build system and can be imported directly into Android Studio (make sure you are using the latest stable version available [here](https://developer.android.com/studio)). 
